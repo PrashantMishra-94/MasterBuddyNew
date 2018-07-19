@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item  android:id="@+id/menuHome"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/home"/>
+    <item  android:id="@+id/menuTrending"
+        android:icon="@drawable/trending"
+        android:title="@string/trending"/>
+    <item  android:id="@+id/menuPlaylist"
+        android:icon="@drawable/playlist"
+        android:title="@string/playlist"/>
+</menu>

@@ -1,63 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity"
-    android:padding="20dp"
-    android:background="@drawable/background_learning_image"
-    android:id="@+id/lytHome">
+    tools:context=".HomeActivity">
 
-    <RadioGroup
-        android:id="@+id/radioGroup"
+    <ImageView
+        android:id="@+id/imgHomeBackground"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitXY"/>
 
-        <RadioButton
-            android:id="@+id/radioLearning"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:button="@android:color/transparent"
-            android:checked="true"
-            android:background="@drawable/bg_learning_button"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <RadioButton
-            android:id="@+id/radioMusic"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:button="@android:color/transparent"
-            android:background="@drawable/bg_music_button"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="20dp">
 
-        <RadioButton
-            android:id="@+id/radioTreatment"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:button="@android:color/transparent"
-            android:background="@drawable/bg_treatment_button"/>
+            <Button
+                android:id="@+id/btnBack"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_back_button"/>
 
-        <RadioButton
-            android:id="@+id/radioShows"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:button="@android:color/transparent"
-            android:background="@drawable/bg_shows_button"/>
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="60dp"
+                android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/radioRecent"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:button="@android:color/transparent"
-            android:background="@drawable/bg_recents_button"/>
+                <RadioButton
+                    android:id="@+id/radioLearning"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:button="@android:color/transparent"
+                    android:checked="true"
+                    android:background="@drawable/bg_learning_button"/>
+
+                <RadioButton
+                    android:id="@+id/radioMusic"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/bg_music_button"/>
+
+                <RadioButton
+                    android:id="@+id/radioTreatment"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/bg_treatment_button"/>
+
+                <RadioButton
+                    android:id="@+id/radioShows"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/bg_shows_button"/>
+
+                <RadioButton
+                    android:id="@+id/radioRecent"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/bg_recents_button"/>
 
 
-    </RadioGroup>
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lytContentButtons"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_margin="20dp"
+            android:visibility="visible">
+
+            <ImageButton
+                android:id="@+id/imgVideo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:scaleType="fitXY"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/videos"
+                android:src="@drawable/ic_video_icon"/>
+
+            <ImageButton
+                android:id="@+id/imgAudio"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:scaleType="fitXY"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/audio"
+                android:src="@drawable/ic_audio_icon"/>
+
+            <ImageButton
+                android:id="@+id/imgImages"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:scaleType="fitXY"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/images"
+                android:src="@drawable/ic_images_icon"/>
+
+            <ImageButton
+                android:id="@+id/imgDocs"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:scaleType="fitXY"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/save"
+                android:src="@drawable/ic_docs_icon"/>
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvThumbnails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+    </LinearLayout>
 
 
-</LinearLayout>
+</FrameLayout>

@@ -1,7 +1,7 @@
 package com.prashant.masterbuddy.ws
 
 /**
- * Created by tanmay.agnihotri on 2/13/18.
+ * Created by prashant.mishra on 2/13/18.
  */
 
 import com.android.volley.AuthFailureError
@@ -18,10 +18,6 @@ import java.io.ByteArrayOutputStream
 import java.io.DataOutputStream
 import java.io.IOException
 import java.io.UnsupportedEncodingException
-
-/**
- * Created by Belal on 10/24/2017.
- */
 
 open class VolleyMultipartRequest(method: Int, url: String,
                                   private val mListener: Response.Listener<NetworkResponse>,

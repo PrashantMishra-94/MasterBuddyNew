@@ -1,7 +1,9 @@
 package com.prashant.masterbuddy.utils
 
 import android.Manifest
+import android.content.ContentResolver
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.ConnectivityManager
@@ -9,16 +11,20 @@ import android.net.NetworkInfo
 import android.net.Uri
 import android.os.Environment
 import android.support.v4.app.ActivityCompat
+import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
 import android.telephony.TelephonyManager
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.webkit.MimeTypeMap
 import android.widget.EditText
 import android.widget.Toast
+import com.prashant.masterbuddy.Constants
 
 import com.prashant.masterbuddy.R
+import com.prashant.masterbuddy.ws.model.GetAllFileResponse
 
 import org.apache.commons.io.IOUtils
 
@@ -26,6 +32,8 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
+import java.net.URI
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -169,5 +177,54 @@ object Utils {
                     Toast.LENGTH_SHORT).show()
         }
         return false
+    }
+
+    @JvmStatic fun getMimeType(context: Context, uri: Uri): String? {
+        return if (uri.scheme == ContentResolver.SCHEME_CONTENT) {
+            val cr = context.contentResolver
+            cr.getType(uri)
+        } else {
+            val fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString())
+            MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+                    fileExtension.toLowerCase())
+        }
+    }
+
+    fun openChooserForFile(context: Context, file: File) {
+        val intent = Intent()
+        intent.action = Intent.ACTION_VIEW
+        val uri = FileProvider.getUriForFile(context, context.getString(R.string.authority), file)
+        intent.setDataAndType(uri, Utils.getMimeType(context, uri))
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        if (context.packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY).isEmpty()) {
+            Toast.makeText(context, R.string.no_app_found, Toast.LENGTH_SHORT).show()
+        } else {
+            context.startActivity(intent)
+        }
+    }
+
+    fun getURL(str: String): URL {
+        val url = URL(str)
+        val uri = URI(url.protocol, url.userInfo, url.host, url.port, url.path, url.query, url.ref)
+        return uri.toURL()
+    }
+
+    fun getChannelStr(channel: Int): String {
+        return when(channel) {
+            Constants.CHANNEL_MUSIC -> "Music"
+            Constants.CHANNEL_SHOW -> "Show"
+            Constants.CHANNEL_TREATMENT -> "Treatment"
+            Constants.CHANNEL_SAVED -> "Saved"
+            else -> "Learning"
+        }
+    }
+
+    fun getMediaStr(mediaType: Int): String {
+        return when (mediaType) {
+            Constants.MEDIA_DOCS -> "Documents"
+            Constants.MEDIA_IMAGE -> "Images"
+            Constants.MEDIA_AUDIO -> "Audio"
+            else -> "Video"
+        }
     }
 }

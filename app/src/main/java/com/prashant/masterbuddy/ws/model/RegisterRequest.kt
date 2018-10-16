@@ -7,9 +7,12 @@ import com.google.gson.annotations.SerializedName
  */
 
 class RegisterRequest(@field:SerializedName("Name")
-                      private var name: String?, @field:SerializedName("Email")
-                      private var EmailId: String?, @field:SerializedName("Password")
-                      private var password: String?, @field:SerializedName("RegistrationDate")
+                      private var name: String?,
+                      @field:SerializedName("Email")
+                      private var EmailId: String?,
+                      @field:SerializedName("Password")
+                      private var password: String?,
+                      @field:SerializedName("RegistrationDate")
                       private var RegistrationDate: String?) {
 
     fun setName(name: String) {

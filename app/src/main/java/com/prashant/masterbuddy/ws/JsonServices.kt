@@ -14,15 +14,9 @@ import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.prashant.masterbuddy.Constants
-import com.prashant.masterbuddy.ws.model.UserResult
-import com.prashant.masterbuddy.ws.model.RegisterRequest
-import com.prashant.masterbuddy.ws.model.RegisterResult
-import com.prashant.masterbuddy.ws.model.SelectVideoResponse
-import com.prashant.masterbuddy.ws.model.SelectVideosRequest
-import com.prashant.masterbuddy.ws.model.DataPart
-import com.prashant.masterbuddy.ws.model.UserRequest
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.prashant.masterbuddy.ws.model.*
 
 import org.apache.commons.io.IOUtils
 import org.json.JSONException
@@ -35,6 +29,8 @@ import java.util.HashMap
 
 
 class JsonServices(private val mContext: Context, private val volleyCallback: VolleyCallback) {
+
+    private val TAG = "JsonServices TEST!!"
     private var strResponse: String? = null
     private val builder = GsonBuilder()
 
@@ -47,24 +43,24 @@ class JsonServices(private val mContext: Context, private val volleyCallback: Vo
     }
 
     fun executeRequest(url: String, json: String, returnType: Type) {
-        Log.d("Test!!!!!!", "json:$json")
+        Log.d(TAG, "json:$json")
 
         var jsonObject: JSONObject? = null
         try {
             jsonObject = JSONObject(json)
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.e("JSON", e.toString())
+            Log.e(TAG, e.toString())
         }
 
         val jsonObjectRequest = JsonObjectRequest(com.android.volley.Request.Method.POST, url, jsonObject,
 
                 Response.Listener { response ->
-                    Log.d("Response from volley ", "" + response)
+                    Log.d(TAG, "Response from volley " + response)
                     strResponse = response.toString()
                     volleyCallback.onSuccess(createObjectFromJson<Any>(strResponse, returnType))
                 }, Response.ErrorListener { error ->
-            Log.e("JsonService", "Error Status code: " + error.networkResponse.statusCode)
+            Log.e(TAG, "Error Status code: " + error?.networkResponse?.statusCode)
             error.printStackTrace()
             volleyCallback.onFailure()
         })
@@ -141,14 +137,14 @@ class JsonServices(private val mContext: Context, private val volleyCallback: Vo
         val userRequest = UserRequest(username, password)
         val gson = Gson()
         val json = gson.toJson(userRequest)
-        executeRequest("http://masterbuddy.info/User/Login", json, UserResult::class.java)
+        executeRequest("http://api.masterbuddy.com/User/Login", json, UserResult::class.java)
     }
 
     fun registerUser(name: String, emailId: String, Password: String, currentDate: String) {
         val registerRequest = RegisterRequest(name, emailId, Password, currentDate)
         val gson = Gson()
         val json = gson.toJson(registerRequest)
-        executeRequest("http://masterbuddy.info/User/Register", json, RegisterResult::class.java)
+        executeRequest("http://api.masterbuddy.com/User/Register", json, RegisterResult::class.java)
     }
 
     fun getVideoList(startIndex: Int, type: Int) {
@@ -160,5 +156,10 @@ class JsonServices(private val mContext: Context, private val volleyCallback: Vo
         val homeURL = "http://masterbuddy.info/File/SelectVideos"
         val trendingURL = "http://masterbuddy.info/File/SelectTrendingVideos"
         executeRequest(if (type == Constants.LIST_TYPE_TRENDING) trendingURL else homeURL, json, SelectVideoResponse::class.java)
+    }
+
+    fun getAllFiles(channel: Int? = null, media: Int? = null, startIndex: Int = 0) {
+        val json = Gson().toJson(GetAllFilesRequest(channel, media, startIndex))
+        executeRequest("http://api.masterbuddy.com/File/GetAllFiles", json, GetAllFileResponse::class.java)
     }
 }

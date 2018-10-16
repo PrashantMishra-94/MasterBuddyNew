@@ -18,7 +18,6 @@ import okhttp3.RequestBody
 import okhttp3.Response
 
 class JsonServiceOKHTTP(private val mContext: Context, private val volleyCallback: VolleyCallback) {
-    private val builder = GsonBuilder()
     private val client = OkHttpClient()
 
     private fun <T> executeAsync(func: IFunction<T>) {
@@ -56,7 +55,7 @@ class JsonServiceOKHTTP(private val mContext: Context, private val volleyCallbac
     }
 
     private fun <T> executeRequest(url: String, json: String?, returnType: Type): T? {
-        Log.d("Test!!!!!!", "json:" + json!!)
+        Log.d("Test!!!!!!", "json:$json")
         var result: T? = null
         val maxLogSize = 10000
         var responseCode = 0
@@ -103,7 +102,7 @@ class JsonServiceOKHTTP(private val mContext: Context, private val volleyCallbac
         val registerRequest = RegisterRequest(name, emailId, Password, currentDate)
         val gson = Gson()
         val json = gson.toJson(registerRequest)
-        return executeRequest<RegisterResult>("http://masterbuddy.info/User/Register", json, RegisterResult::class.java)
+        return executeRequest<RegisterResult>("http://api.masterbuddy.com/User/Register", json, RegisterResult::class.java)
     }
 
     companion object {

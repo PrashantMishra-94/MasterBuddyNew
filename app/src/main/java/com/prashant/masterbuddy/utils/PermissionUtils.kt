@@ -27,13 +27,9 @@ class PermissionUtils {
             permissionString.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             permissionString.add(Manifest.permission.INTERNET)
             permissionString.add(Manifest.permission.ACCESS_NETWORK_STATE)
-            permissionString.add(Manifest.permission.READ_PHONE_STATE)/*
-            permissionString.add(Manifest.permission.ACCESS_NETWORK_STATE);
-            permissionString.add(Manifest.permission.LOCATION_HARDWARE);*/
+            permissionString.add(Manifest.permission.READ_PHONE_STATE)
 
-            ActivityCompat.requestPermissions(activity,
-                    permissionString.toTypedArray<String>(),
-                    1)
+            ActivityCompat.requestPermissions(activity, permissionString.toTypedArray(), 1)
         } catch (e: Exception) {
             Log.d("Exception", e.toString())
         }

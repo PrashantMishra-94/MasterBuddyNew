@@ -47,7 +47,7 @@ class VideoListAdapter(private val videoListFragment: VideoListFragment, private
         if (position == itemCount - 1) {
             videoListFragment.addNewVideosInList(position)
         }
-        holder.ibOption.setOnClickListener { v -> videoListFragment.addToPlayList(v, mListValues!![holder.adapterPosition]) }
+        //holder.ibOption.setOnClickListener { v -> videoListFragment.addToPlayList(v, mListValues!![holder.adapterPosition]) }
     }
 
     override fun getItemCount(): Int {

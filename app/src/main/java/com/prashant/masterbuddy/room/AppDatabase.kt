@@ -5,10 +5,12 @@ import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
 
-@Database(entities = arrayOf(Video::class), version = 1)
+@Database(entities = [Video::class, SavedMedia::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun videoDao(): VideoDao
+
+    abstract fun savedMediaDao(): SavedMediaDao
 
     companion object {
 

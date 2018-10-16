@@ -118,7 +118,7 @@ class VideoListFragment : android.app.Fragment() {
         }
     }
 
-    fun addToPlayList(view: View, video: VideoList) {
+    /*fun addToPlayList(view: View, video: VideoList) {
         val popup = PopupMenu(activity, view)
         popup.menuInflater.inflate(R.menu.menu_popup, popup.menu)
         popup.menu.findItem(R.id.menuPlaylist).isVisible = (activity as VideoListActivity).listType != Constants.LIST_TYPE_PLAYLIST
@@ -142,5 +142,5 @@ class VideoListFragment : android.app.Fragment() {
             false
         }
         popup.show()
-    }
+    }*/
 }

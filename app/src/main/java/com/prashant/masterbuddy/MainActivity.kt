@@ -1,5 +1,6 @@
 package com.prashant.masterbuddy
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -46,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
         progressBar = findViewById(R.id.pbLogin)
 
-        application!!.permissionUtils.requestPermission(this)
+        //application!!.permissionUtils.requestPermission(this)
 
         btnSignUp!!.setOnClickListener {
             llLogin!!.visibility = View.GONE
@@ -67,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                     if (isDestroyed) return
                     progressBar!!.visibility = View.GONE
                     val userResult = objectFromJson as? UserResult
-                    if (userResult != null && userResult.result != null) {
+                    if (userResult?.result != null) {
                         if (userResult.result!!.messageCode == 1) {
                             val user = userResult.result!!.user
                             if (user != null) {
@@ -75,6 +76,7 @@ class MainActivity : AppCompatActivity() {
                                 application!!.sharedPreferences.edit().putInt(Constants.USER_TYPE, user.userType!!).apply()
                                 application!!.sharedPreferences.edit().putBoolean(Constants.IS_LOGGED_IN, true).apply()
                                 Toast.makeText(application, "Login successful", Toast.LENGTH_SHORT).show()
+                                startActivity(Intent(this@MainActivity, HomeActivity::class.java))
                                 finish()
                             } else {
                                 Toast.makeText(application, "Oops something went wrong", Toast.LENGTH_SHORT).show()
@@ -119,13 +121,14 @@ class MainActivity : AppCompatActivity() {
                     if (isDestroyed) return
                     progressBar!!.visibility = View.GONE
                     val registerResult = objectFromJson as? RegisterResult
-                    if (registerResult != null && registerResult.response != null) {
+                    if (registerResult?.response != null) {
                         val response = registerResult.response
                         if (response!!.isSuccessfullyRegistred) {
                             application!!.sharedPreferences.edit().putInt(Constants.USER_ID, response.isUserID).apply()
                             application!!.sharedPreferences.edit().putInt(Constants.USER_TYPE, 2).apply()
                             application!!.sharedPreferences.edit().putBoolean(Constants.IS_LOGGED_IN, true).apply()
                             Toast.makeText(application, response.message, Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this@MainActivity, HomeActivity::class.java))
                             finish()
                         } else {
                             Toast.makeText(application, response.message, Toast.LENGTH_SHORT).show()

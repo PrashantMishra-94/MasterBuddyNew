@@ -17,14 +17,15 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".VideoListActivity"
-            android:theme="@style/Base.Theme.AppCompat.Light">
-        </activity>
+            android:theme="@style/Base.Theme.AppCompat.Light" />
         <activity
             android:name=".UploadVideoActivity"
             android:theme="@style/Base.Theme.AppCompat.Light"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".PlayVideoActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".MainActivity"
@@ -44,15 +45,31 @@
                 android:resource="@xml/paths" />
         </provider>
 
-        <activity android:name=".HomeActivity"
+        <activity
+            android:name=".HomeActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape"
-            android:configChanges="orientation|keyboardHidden"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".SplashActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ImageViewActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <service
+            android:name=".DownloaderService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

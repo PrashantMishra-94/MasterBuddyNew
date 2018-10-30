@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/imgHomeBackground"
@@ -17,7 +26,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -31,10 +40,11 @@
 
             <RadioGroup
                 android:id="@+id/radioGroup"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="60dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="60dp"
                 android:layout_marginRight="60dp"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -70,30 +80,39 @@
                     android:button="@android:color/transparent"
                     android:background="@drawable/bg_shows_button"/>
 
-                <RadioButton
+                <!--<RadioButton
                     android:id="@+id/radioRecent"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:button="@android:color/transparent"
-                    android:background="@drawable/bg_recents_button"/>
+                    android:background="@drawable/bg_recents_button"/>-->
+
+                <RadioButton
+                    android:id="@+id/radioSaved"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/bg_saved_button"/>
 
 
             </RadioGroup>
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/lytContentButtons"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:layout_margin="20dp"
             android:visibility="visible">
 
-            <ImageButton
+            <com.prashant.masterbuddy.utils.SquareImageView
                 android:id="@+id/imgVideo"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="10dp"
                 android:scaleType="fitXY"
@@ -101,10 +120,10 @@
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/videos"/>
 
-            <ImageButton
+            <com.prashant.masterbuddy.utils.SquareImageView
                 android:id="@+id/imgAudio"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="10dp"
                 android:scaleType="fitXY"
@@ -112,10 +131,10 @@
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/audio"/>
 
-            <ImageButton
+            <com.prashant.masterbuddy.utils.SquareImageView
                 android:id="@+id/imgImages"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="10dp"
                 android:scaleType="fitXY"
@@ -123,10 +142,10 @@
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/images"/>
 
-            <ImageButton
+            <com.prashant.masterbuddy.utils.SquareImageView
                 android:id="@+id/imgDocs"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="10dp"
                 android:scaleType="fitXY"
@@ -140,7 +159,8 @@
             android:id="@+id/rvThumbnails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:layout_margin="20dp"/>
 
     </LinearLayout>
 

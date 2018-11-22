@@ -33,7 +33,7 @@ class HomeAdapter(private val context: Context, val channelType: Int, val mediaT
                 .load(files[position].thumbnailUrl)
                 .apply(RequestOptions().placeholder(R.drawable.thumbnail_default))
                 .into(holder.imgThumbnail)
-        holder.ibOption.setOnClickListener { v -> download(v, position) }
+        holder.ibOption.setOnClickListener { v -> showPopup(v, position) }
         holder.itemView.setOnClickListener {
             when (mediaType) {
                 Constants.MEDIA_VIDEO, Constants.MEDIA_AUDIO -> {
@@ -55,7 +55,7 @@ class HomeAdapter(private val context: Context, val channelType: Int, val mediaT
             }
         }
 
-        if (channelType != Constants.CHANNEL_SAVED && !isCheckingForNewFiles
+        if (channelType != Constants.CHANNEL_SAVED && channelType != Constants.CHANNEL_FAVOURITE && !isCheckingForNewFiles
                 && filesCount > files.size && position >= files.size-10) {
             isCheckingForNewFiles = true
             (context as HomeActivity).checkForNewFiles(channelType, mediaType, files.size)
@@ -69,25 +69,48 @@ class HomeAdapter(private val context: Context, val channelType: Int, val mediaT
         val ibOption = view.ibOption!!
     }
 
-    fun download(view: View, position: Int) {
+    fun showPopup(view: View, position: Int) {
         val popup = PopupMenu(context, view)
         popup.menuInflater.inflate(R.menu.menu_popup, popup.menu)
-        if (channelType == Constants.CHANNEL_SAVED) popup.menu.findItem(R.id.menuDownload).title = "Remove"
+        if (channelType == Constants.CHANNEL_SAVED) {
+            popup.menu.findItem(R.id.menuDownload).title = "Remove"
+            popup.menu.findItem(R.id.menuFavourite).isVisible = false
+        }
+        if (channelType == Constants.CHANNEL_FAVOURITE) popup.menu.findItem(R.id.menuFavourite).title = "Remove"
         popup.setOnMenuItemClickListener { item ->
-            if (channelType == Constants.CHANNEL_SAVED) {
-                (context.applicationContext as Application).savedMediaDataSource.deleteSavedFile(files[position].id!!)
-                files.removeAt(position)
-                notifyItemRemoved(position)
-                if (files[position].fileUrl != null) {
-                    java.io.File(files[position].fileUrl!!).delete()
+            val app = context.applicationContext as Application
+            when (item.itemId) {
+                R.id.menuDownload -> {
+                    if (channelType == Constants.CHANNEL_SAVED) {
+                        if (files[position].fileUrl != null) {
+                            java.io.File(files[position].fileUrl!!).delete()
+                        }
+                        if (files[position].thumbnailUrl != null) {
+                            java.io.File(files[position].thumbnailUrl!!).delete()
+                        }
+                        app.savedMediaDataSource.deleteSavedFile(files[position].id!!)
+                        files.removeAt(position)
+                        notifyItemRemoved(position)
+                        Toast.makeText(context, "Removed Successfully", Toast.LENGTH_SHORT).show()
+                    } else {
+                        DownloaderService.startDownload(context, files[position], channelType, mediaType)
+                    }
                 }
-                if (files[position].thumbnailUrl != null) {
-                    java.io.File(files[position].thumbnailUrl!!).delete()
+                R.id.menuFavourite -> {
+                    if (channelType == Constants.CHANNEL_FAVOURITE) {
+                        app.savedMediaDataSource.deleteSavedFile(files[position].id!!)
+                        Toast.makeText(context, "Removed Successfully", Toast.LENGTH_SHORT).show()
+                        files.removeAt(position)
+                        notifyItemRemoved(position)
+                    } else {
+                        if (!app.savedMediaDataSource.isAlreadySaved(files[position].id!!, Constants.CHANNEL_FAVOURITE)) {
+                            app.savedMediaDataSource.insertInSavedMedia(files[position], Constants.CHANNEL_FAVOURITE, mediaType)
+                            Toast.makeText(context, "Added to Favourites", Toast.LENGTH_SHORT).show()
+                        } else Toast.makeText(context, "Already Exists", Toast.LENGTH_SHORT).show()
+                    }
                 }
-                Toast.makeText(context, "Removed Successfully", Toast.LENGTH_SHORT).show()
-            } else {
-                DownloaderService.startDownload(context, files[position], channelType, mediaType)
             }
+
             false
         }
         popup.show()

@@ -5,8 +5,8 @@
         android:id="@+id/menuDownload"
         android:title="@string/download"/>
 
-    <!--<item
-        android:id="@+id/menuRemovePlaylist"
-        android:title="@string/remove_from_playlist"/>-->
+    <item
+        android:id="@+id/menuFavourite"
+        android:title="@string/add_to_favourite"/>
 
 </menu>

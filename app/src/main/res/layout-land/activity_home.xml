@@ -96,6 +96,14 @@
                     android:button="@android:color/transparent"
                     android:background="@drawable/bg_saved_button"/>
 
+                <RadioButton
+                    android:id="@+id/radioFavourite"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/bg_favourite_button"/>
+
 
             </RadioGroup>
 

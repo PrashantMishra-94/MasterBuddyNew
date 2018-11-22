@@ -13,6 +13,7 @@ import android.view.WindowManager
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.prashant.masterbuddy.R.id.*
 import com.prashant.masterbuddy.utils.RecyclerViewItemDecorator
 import com.prashant.masterbuddy.ws.model.GetAllFileResponse
 import com.prashant.masterbuddy.ws.model.Media
@@ -67,19 +68,21 @@ class HomeActivity : AppCompatActivity(){
         }
         setHomeVisibility(false)
         val fileProvider = (application as Application).fileProvider
-        val selectedChannel = getSelectedChannel()
+        val selectedChannel = selectedChannel
         rvThumbnails.adapter = HomeAdapter(this, selectedChannel, selectedMedia,
                 fileProvider.getFiles(selectedChannel, selectedMedia), fileProvider.getFileCount(selectedChannel, selectedMedia))
     }
 
-    private fun getSelectedChannel(): Int {
+    val selectedChannel: Int
+        get() {
         return when (radioGroup.checkedRadioButtonId) {
             R.id.radioLearning -> Constants.CHANNEL_LEARNING
             R.id.radioMusic -> Constants.CHANNEL_MUSIC
             R.id.radioShows -> Constants.CHANNEL_SHOW
             R.id.radioTreatment -> Constants.CHANNEL_TREATMENT
             R.id.radioSaved -> Constants.CHANNEL_SAVED
-            else -> R.drawable.background_learning_image
+            R.id.radioFavourite -> Constants.CHANNEL_FAVOURITE
+            else -> Constants.CHANNEL_LEARNING
         }
     }
 

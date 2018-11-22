@@ -8,7 +8,7 @@ import com.prashant.masterbuddy.ws.model.File
  */
 class SavedMediaDataSource(database: AppDatabase, context: Context) : BaseDatasource(database, context) {
 
-    fun insertInSavedMedia(file: File, channel: Int, mediaType: Int, filePath: String?, thumbPath: String?) {
+    fun insertInSavedMedia(file: File, channel: Int, mediaType: Int, filePath: String? = null, thumbPath: String? = null) {
         val media = SavedMedia()
         media.mediaId = file.id!!
         media.channel = channel
@@ -16,14 +16,14 @@ class SavedMediaDataSource(database: AppDatabase, context: Context) : BaseDataso
         media.title = file.title
         media.name = file.name
         media.description = file.description
-        media.filePath = filePath
-        media.thumbnailPath = thumbPath
+        media.filePath = filePath ?: file.fileUrl
+        media.thumbnailPath = thumbPath ?: file.thumbnailUrl
         database.savedMediaDao().insertMedia(media)
     }
 
-    fun getSavedFiles(mediaType: Int): ArrayList<File> {
+    fun getSavedFiles(channel: Int, mediaType: Int): ArrayList<File> {
         val list = ArrayList<File>()
-        for (media in database.savedMediaDao().getAllMedia(mediaType)) {
+        for (media in database.savedMediaDao().getAllMedia(channel, mediaType)) {
             val file = File(
                     id = media.mediaId,
                     name = media.name,
@@ -37,8 +37,8 @@ class SavedMediaDataSource(database: AppDatabase, context: Context) : BaseDataso
         return list
     }
 
-    fun isAlreadySaved(mediaId: Int): Boolean {
-        return database.savedMediaDao().getSavedMedia(mediaId) != null
+    fun isAlreadySaved(mediaId: Int, forChannel: Int): Boolean {
+        return database.savedMediaDao().getSavedMedia(mediaId, forChannel) != null
     }
 
     fun deleteSavedFile(mediaId: Int) {

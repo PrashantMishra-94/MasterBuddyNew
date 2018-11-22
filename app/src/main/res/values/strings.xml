@@ -197,7 +197,6 @@
     <string name="more">More</string>
     <string name="log_out">Log Out</string>
     <string name="add_to_playlist">Add to playlist</string>
-    <string name="remove_from_playlist">Remove from playlist</string>
     <string name="videos">Videos</string>
     <string name="audio">Audio</string>
     <string name="images">Images</string>
@@ -207,4 +206,5 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="download">Download</string>
     <string name="no_app_found">No apps found to open the file</string>
+    <string name="add_to_favourite">Add to Favourite</string>
 </resources>

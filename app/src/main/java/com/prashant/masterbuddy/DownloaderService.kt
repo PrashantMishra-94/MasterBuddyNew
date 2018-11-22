@@ -42,9 +42,7 @@ class DownloaderService : IntentService("DownloaderService") {
             }
             val builder = NotificationCompat.Builder(this, Constants.NOTIFICATION_CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_notification)
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-                builder.color = resources.getColor(R.color.Green)
-            }
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) builder.color = resources.getColor(R.color.Green)
             builder.setContentTitle("Downloading $name")
             builder.setOngoing(true)
 
@@ -62,7 +60,7 @@ class DownloaderService : IntentService("DownloaderService") {
                 connection.connect()
                 val totalLength = connection.contentLength
                 val buff = BufferedInputStream(url.openStream())
-                mediaFile = getFile(fileUrl, channel, media)
+                mediaFile = getFile(this, fileUrl, channel, media)
                 val fos = mediaFile.outputStream()
                 buff.use { bis ->
                     fos.use { os ->
@@ -93,14 +91,14 @@ class DownloaderService : IntentService("DownloaderService") {
             builder.setOngoing(false).setProgress(0,0, false)
             mNotificationManager?.notify(notificationId, builder.build())
             if (isDownloaded) {
-                insertSaveMedia(file, channel, media, mediaFile?.absolutePath, thumbFile?.absolutePath)
+                insertSaveMedia(file, media, mediaFile?.absolutePath, thumbFile?.absolutePath)
             }
         }
     }
 
     private fun downloadThumbnail(thumbUrl: String?, channel: Int, mediaType: Int): java.io.File? {
         if (thumbUrl != null) {
-            val thumbFile = getFile(thumbUrl, channel, mediaType)
+            val thumbFile = getFile(this, thumbUrl, channel, mediaType)
             try {
                 val url = Utils.getURL(thumbUrl)
                 Log.d(TAG, "Parsed Thumbnail URL: $url")
@@ -124,9 +122,9 @@ class DownloaderService : IntentService("DownloaderService") {
         return null
     }
 
-    private fun insertSaveMedia(file: File, channel: Int, mediaType: Int, filePath: String?, thumbPath: String?) {
+    private fun insertSaveMedia(file: File, mediaType: Int, filePath: String?, thumbPath: String?) {
         val application = applicationContext as Application
-        application.savedMediaDataSource.insertInSavedMedia(file, channel, mediaType, filePath, thumbPath)
+        application.savedMediaDataSource.insertInSavedMedia(file, Constants.CHANNEL_SAVED, mediaType, filePath, thumbPath)
     }
 
     companion object {
@@ -134,7 +132,7 @@ class DownloaderService : IntentService("DownloaderService") {
         const val TAG = "DownloaderService"
 
         fun startDownload(context: Context, file: File, channel: Int, mediaType: Int) {
-            if ((context.applicationContext as Application).savedMediaDataSource.isAlreadySaved(file.id!!)) {
+            if ((context.applicationContext as Application).savedMediaDataSource.isAlreadySaved(file.id!!, Constants.CHANNEL_SAVED)) {
                 Toast.makeText(context, "Already Downloaded", Toast.LENGTH_LONG).show()
             } else {
                 val intent = Intent(context, DownloaderService::class.java)
@@ -149,11 +147,11 @@ class DownloaderService : IntentService("DownloaderService") {
 
         }
 
-        private fun getFile(url: String, channel: Int, mediaType: Int, isThumb: Boolean = false): java.io.File {
+        private fun getFile(context: Context, url: String, channel: Int, mediaType: Int, isThumb: Boolean = false): java.io.File {
             val name = url.substring(url.lastIndexOf("/")+1)
             Log.d(TAG, "Doc Name: $name")
             val type = if (isThumb) "Thumbnails" else "Saved"
-            val directory = java.io.File(Environment.getExternalStorageDirectory().absolutePath +
+            val directory = java.io.File(context.externalCacheDir.absolutePath +
                     java.io.File.separator + "MasterBuddy" + java.io.File.separator + type + java.io.File.separator +
                     Utils.getChannelStr(channel) + java.io.File.separator + Utils.getMediaStr(mediaType))
             if (!directory.exists()) {

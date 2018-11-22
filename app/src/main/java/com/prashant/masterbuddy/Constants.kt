@@ -29,6 +29,7 @@ interface Constants {
         const val CHANNEL_TREATMENT = 3
         const val CHANNEL_SHOW = 4
         const val CHANNEL_SAVED = 5
+        const val CHANNEL_FAVOURITE = 6
 
         const val MEDIA_VIDEO = 1
         const val MEDIA_AUDIO = 2

@@ -39,8 +39,8 @@ class FileProvider(private val context: Application) {
     }
 
     fun getFiles(channel: Int, mediaType: Int): ArrayList<File> {
-        return if (channel == Constants.CHANNEL_SAVED) {
-            context.savedMediaDataSource.getSavedFiles(mediaType)
+        return if (channel == Constants.CHANNEL_SAVED || channel == Constants.CHANNEL_FAVOURITE) {
+            context.savedMediaDataSource.getSavedFiles(channel, mediaType)
         } else {
             response?.getFiles(channelType = channel, mediaType = mediaType) ?: ArrayList()
         }
